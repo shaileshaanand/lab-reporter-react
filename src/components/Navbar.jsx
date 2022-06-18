@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { Navbar, SegmentedControl, Text, createStyles } from "@mantine/core";
-import {
-  BellRinging,
-  Fingerprint,
-  Key,
-  DatabaseImport,
-  Receipt2,
-  Logout,
-  Home2,
-} from "tabler-icons-react";
+import { Logout, Home2 } from "tabler-icons-react";
 import { Title } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
@@ -131,7 +123,7 @@ export default function NavbarSegmented() {
         <Center mb={20}>
           <Title order={1}>Lab Reporter</Title>
         </Center>
-        <Divider/>
+        <Divider />
       </Navbar.Section>
 
       <Navbar.Section grow mt="xl">
