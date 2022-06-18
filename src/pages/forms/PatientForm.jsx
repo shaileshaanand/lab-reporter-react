@@ -9,6 +9,7 @@ import { Box, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useEffect } from "react";
+import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 import { getPatient, newPatient, updatePatient } from "../../api/api";
@@ -61,17 +62,14 @@ const PatientForm = ({ id }) => {
     },
   });
 
-  const newPatientQuery = useQuery(
-    "newPatient",
-    async () => {
-      const response = await newPatient(omit(form.values));
+  const newPatientMutation = useMutation(
+    async (data) => {
+      const response = await newPatient(omit(data));
       return response[1];
     },
     {
-      enabled: false,
-      onSuccess: (data) => {
+      onSuccess: () => {
         form.reset();
-        console.log({ data });
         showNotification({
           message: "Patient created",
           title: "Success",
@@ -82,17 +80,13 @@ const PatientForm = ({ id }) => {
     }
   );
 
-  const updatePatientQuery = useQuery(
-    "editPatient",
-    async () => {
-      const response = await updatePatient(omit(form.values), { id });
-
+  const updatePatientQuery = useMutation(
+    async (data) => {
+      const response = await updatePatient(omit(data), { id });
       return response[1];
     },
     {
-      enabled: false,
       onSuccess: (data) => {
-        console.log({ data });
         data.id &&
           showNotification({
             message: "Patient updated",
@@ -105,27 +99,32 @@ const PatientForm = ({ id }) => {
   );
 
   const getPatientQuery = useQuery(
-    "getPatient",
+    ["getPatient", id],
     async () => {
       const response = await getPatient({ id });
       return response[1];
     },
     {
-      enabled: false,
+      enabled: !!id,
       select: (patient) => {
         delete patient.id;
+        delete patient.createdAt;
+        delete patient.updatedAt;
         return patient;
+      },
+      onSuccess: (data) => {
+        form.setValues(data);
       },
     }
   );
 
-  useEffect(() => {
-    if (id) {
-      getPatientQuery.refetch().then(({ data }) => {
-        form.setValues(data);
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (id) {
+  //     getPatientQuery.refetch().then(({ data }) => {
+  //       form.setValues(data);
+  //     });
+  //   }
+  // }, []);
 
   return (
     <Box m={30}>
@@ -138,13 +137,15 @@ const PatientForm = ({ id }) => {
           position: "relative",
         })}
       >
-        {(newPatientQuery.isFetching || getPatientQuery.isFetching) && (
+        {(newPatientMutation.status === "loading" ||
+          (id && getPatientQuery.isFetching)) && (
           <Overlay opacity={0.6} color="#000" zIndex={5} />
         )}
         <form
           onSubmit={form.onSubmit((values) => {
-            console.log(values);
-            id ? updatePatientQuery.refetch() : newPatientQuery.refetch();
+            id
+              ? updatePatientQuery.mutate(form.values)
+              : newPatientMutation.mutate(form.values);
           })}
         >
           <Group grow>
