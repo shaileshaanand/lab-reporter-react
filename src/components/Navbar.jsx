@@ -18,6 +18,7 @@ import { Stethoscope } from "tabler-icons-react";
 import { DeviceAnalytics } from "tabler-icons-react";
 import { Link } from "raviger";
 import { ActiveLink } from "raviger";
+import { Divider } from "@mantine/core";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -130,6 +131,7 @@ export default function NavbarSegmented() {
         <Center mb={20}>
           <Title order={1}>Lab Reporter</Title>
         </Center>
+        <Divider/>
       </Navbar.Section>
 
       <Navbar.Section grow mt="xl">
