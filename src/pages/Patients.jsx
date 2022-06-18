@@ -16,6 +16,7 @@ import { Trash } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
 import { listPatients } from "../api/api";
 import NewPatient from "../components/buttons/NewPatient";
+import PageLayout from "../components/PageLayout";
 import { omit } from "../helpers/utils";
 
 const Patients = () => {
@@ -41,10 +42,7 @@ const Patients = () => {
     }
   );
   return (
-    <Box m={30}>
-      <Title order={2} mb={20}>
-        Patients
-      </Title>
+    <PageLayout title="Patients">
       <NewPatient mb={20} />
       <Group align={"end"}>
         <Box sx={(theme) => ({ width: "100px" })}>
@@ -119,7 +117,7 @@ const Patients = () => {
           <Pagination page={page} total={data?.totalPages} onChange={setPage} />
         </Center>
       </Box>
-    </Box>
+    </PageLayout>
   );
 };
 export default Patients;

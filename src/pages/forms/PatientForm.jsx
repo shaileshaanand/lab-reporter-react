@@ -13,7 +13,7 @@ import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 import { getPatient, newPatient, updatePatient } from "../../api/api";
-import BackButton from "../../components/buttons/BackButton";
+import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
 
 const PatientForm = ({ id }) => {
@@ -128,13 +128,7 @@ const PatientForm = ({ id }) => {
   // }, []);
 
   return (
-    <Box m={30}>
-      <Title order={2} mb={20}>
-        <Group>
-          <BackButton />
-          {id ? "Update Patient" : "New Patient"}
-        </Group>
-      </Title>
+    <PageLayout title={id ? "Update Patient" : "New Patient"} backButton>
       <Box
         sx={(theme) => ({
           maxWidth: theme.breakpoints.sm,
@@ -192,7 +186,7 @@ const PatientForm = ({ id }) => {
           </Group>
         </form>
       </Box>
-    </Box>
+    </PageLayout>
   );
 };
 export default PatientForm;
