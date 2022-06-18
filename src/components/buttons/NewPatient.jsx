@@ -1,7 +1,7 @@
 import { SquarePlus } from "tabler-icons-react";
 import { Button } from "@mantine/core";
 import { Link } from "raviger";
-const NewPatient = () => {
+const NewPatient = (props) => {
   return (
     <Button
       leftIcon={<SquarePlus size={35} />}
@@ -10,6 +10,7 @@ const NewPatient = () => {
       pr={15}
       component={Link}
       href="/patients/new"
+      {...props}
     >
       New Patient
     </Button>
