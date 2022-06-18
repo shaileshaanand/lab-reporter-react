@@ -13,6 +13,7 @@ import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 import { getPatient, newPatient, updatePatient } from "../../api/api";
+import BackButton from "../../components/buttons/BackButton";
 import { omit } from "../../helpers/utils";
 
 const PatientForm = ({ id }) => {
@@ -129,7 +130,10 @@ const PatientForm = ({ id }) => {
   return (
     <Box m={30}>
       <Title order={2} mb={20}>
-        {id ? "Update Patient" : "New Patient"}
+        <Group>
+          <BackButton />
+          {id ? "Update Patient" : "New Patient"}
+        </Group>
       </Title>
       <Box
         sx={(theme) => ({
