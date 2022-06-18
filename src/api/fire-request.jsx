@@ -41,9 +41,7 @@ export const FireRequest = async (
   // modifying path according to pathParam
   if (pathParam) {
     path = path + "?";
-    Object.entries(pathParam).map((obj) => {
-      path += `${obj[0]}=${obj[1]}`;
-    });
+    path += new URLSearchParams(pathParam).toString();
   }
 
   // calling fetch api
