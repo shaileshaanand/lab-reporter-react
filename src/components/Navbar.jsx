@@ -96,8 +96,8 @@ const tabs = [
   { link: "/", label: "Home", icon: Home2 },
   { link: "/reports", label: "Reports", icon: ReportMedical },
   { link: "/patients", label: "Patients", icon: Users },
-  { link: "doctors", label: "Doctors", icon: Stethoscope },
-  { link: "analytics", label: "Analytics", icon: DeviceAnalytics },
+  { link: "/doctors", label: "Doctors", icon: Stethoscope },
+  { link: "/analytics", label: "Analytics", icon: DeviceAnalytics },
 ];
 
 export default function NavbarSegmented() {
