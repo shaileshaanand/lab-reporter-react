@@ -7,6 +7,7 @@ import { ActionIcon } from "@mantine/core";
 import { Space } from "@mantine/core";
 import { TextInput } from "@mantine/core";
 import { Select } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import { Title } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { Link } from "raviger";
@@ -25,7 +26,7 @@ const Patients = () => {
   const [limitOptions, setLimitOptions] = useState(["10", "25", "50", "100"]);
   const [search, setSearch] = useState("");
   const [name] = useDebouncedValue(search, 500);
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["listPatients", { limit, page, name }],
     async () => {
       const response = await listPatients(
@@ -74,44 +75,50 @@ const Patients = () => {
       </Group>
       <Space h={"md"} />
       <Box mt={20}>
-        <Table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Age</th>
-              <th>Gender</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data &&
-              data.data.map((patient) => (
-                <tr key={patient.id}>
-                  <td>{patient.name}</td>
-                  <td>{patient.phone}</td>
-                  <td>{patient.email}</td>
-                  <td>{patient.age}</td>
-                  <td>{patient.gender}</td>
-                  <td>
-                    <Group spacing={"xs"}>
-                      <ActionIcon
-                        color={"blue"}
-                        component={Link}
-                        href={`/patients/${patient.id}/edit`}
-                      >
-                        <Pencil />
-                      </ActionIcon>
-                      <ActionIcon color={"red"}>
-                        <Trash />
-                      </ActionIcon>
-                    </Group>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+        {isLoading ? (
+          <Center style={{ width: "100%", height: "400px" }}>
+            <Loader variant="dots" />
+          </Center>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.data &&
+                data.data.map((patient) => (
+                  <tr key={patient.id}>
+                    <td>{patient.name}</td>
+                    <td>{patient.phone}</td>
+                    <td>{patient.email}</td>
+                    <td>{patient.age}</td>
+                    <td>{patient.gender}</td>
+                    <td>
+                      <Group spacing={"xs"}>
+                        <ActionIcon
+                          color={"blue"}
+                          component={Link}
+                          href={`/patients/${patient.id}/edit`}
+                        >
+                          <Pencil />
+                        </ActionIcon>
+                        <ActionIcon color={"red"}>
+                          <Trash />
+                        </ActionIcon>
+                      </Group>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        )}
         <Space h="md" />
         <Center>
           <Pagination page={page} total={data?.totalPages} onChange={setPage} />
