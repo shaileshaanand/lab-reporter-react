@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
+
 import { login } from "../api/api";
-import { API_URL } from "../config/constants";
 
 const useLogin = (data, options) => {
   return useQuery(

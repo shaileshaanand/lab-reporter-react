@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Table } from "@mantine/core";
 import { Box } from "@mantine/core";
 import { Center } from "@mantine/core";
@@ -10,10 +12,10 @@ import { Select } from "@mantine/core";
 import { Loader } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { Link } from "raviger";
-import { useState } from "react";
 import { useQuery } from "react-query";
 import { Trash } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
+
 import { listPatients } from "../api/api";
 import NewPatient from "../components/buttons/NewPatient";
 import PageLayout from "../components/PageLayout";
@@ -45,7 +47,7 @@ const Patients = () => {
     <PageLayout title="Patients">
       <NewPatient mb={20} />
       <Group align={"end"}>
-        <Box sx={(theme) => ({ width: "100px" })}>
+        <Box sx={{ width: "100px" }}>
           <Select
             data={limitOptions}
             value={limit}

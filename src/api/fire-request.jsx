@@ -1,7 +1,6 @@
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import { showNotification } from "@mantine/notifications";
-import { Check, X } from "tabler-icons-react";
+import { X } from "tabler-icons-react";
+
 import { API_URL } from "../config/constants";
 const baseUrl = API_URL;
 
@@ -33,7 +32,7 @@ export const FireRequest = async (
 
   // modifying path according to params
   if (params) {
-    Object.entries(params).map((obj) => {
+    Object.entries(params).forEach((obj) => {
       path = path.replace(`:${obj[0]}`, obj[1]);
     });
   }
@@ -54,7 +53,7 @@ export const FireRequest = async (
       if (res[0].status === 401) {
         // toast.error("Unauthorized access denied");
         localStorage.removeItem("token");
-      } else if (res[0].status === 405) toast.error("Permission denied");
+      } else if (res[0].status === 405) showNotification("Method not allowed");
       else if (res[0].status >= 400) {
         for (var k in res[1]) {
           if (typeof res[1][k] === "string") {

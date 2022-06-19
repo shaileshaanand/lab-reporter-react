@@ -1,6 +1,6 @@
-import { SquarePlus } from "tabler-icons-react";
 import { Button } from "@mantine/core";
 import { Link } from "raviger";
+import { SquarePlus } from "tabler-icons-react";
 const NewPatient = (props) => {
   return (
     <Button

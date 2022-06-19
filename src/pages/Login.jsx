@@ -1,18 +1,18 @@
 import React from "react";
 
-import { Title, Burger, useMantineTheme } from "@mantine/core";
-import { useState } from "react";
+import { Title } from "@mantine/core";
 import { Container } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { PasswordInput, TextInput } from "@mantine/core";
 import { Button, Box } from "@mantine/core";
 import { Stack } from "@mantine/core";
 import { Center } from "@mantine/core";
+import { useForm } from "@mantine/form";
+
 import useLogin from "../hooks/use-login";
 import useToken from "../hooks/use-token";
 
 const Login = () => {
-  const [token, setToken] = useToken();
+  const [_, setToken] = useToken();
   const form = useForm({
     initialValues: {
       username: "",
@@ -25,7 +25,7 @@ const Login = () => {
     },
   });
 
-  const { data, isLoading, isFetching, refetch } = useLogin(form.values, {
+  const { isFetching, refetch } = useLogin(form.values, {
     onSuccess: (data) => {
       setToken(data.token);
     },
@@ -34,10 +34,8 @@ const Login = () => {
   return (
     <Container
       size="xs"
-      sx={(theme) => {
-        return {
-          minHeight: "100vh",
-        };
+      sx={{
+        minHeight: "100vh",
       }}
     >
       <Box
@@ -57,7 +55,7 @@ const Login = () => {
           </Title>
         </Center>
         <form
-          onSubmit={form.onSubmit((values) => {
+          onSubmit={form.onSubmit(() => {
             refetch();
           })}
           style={{ minHeight: "100%" }}

@@ -1,7 +1,9 @@
 import React from "react";
+
+import { NotificationsProvider } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
 import { QueryClientProvider, QueryClient } from "react-query";
-import { NotificationsProvider } from "@mantine/notifications";
+
 import App from "./App";
 import "./index.css";
 

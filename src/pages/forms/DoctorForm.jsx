@@ -8,6 +8,7 @@ import { showNotification } from "@mantine/notifications";
 import { useQuery } from "react-query";
 import { useMutation } from "react-query";
 import { Check } from "tabler-icons-react";
+
 import { getDoctor, newDoctor, updateDoctor } from "../../api/api";
 import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
@@ -114,7 +115,7 @@ const DoctorForm = ({ id }) => {
           }
         />
         <form
-          onSubmit={form.onSubmit((data) => {
+          onSubmit={form.onSubmit(() => {
             id
               ? updateDoctorMutation.mutate(form.values)
               : newDoctorMutation.mutate(form.values);

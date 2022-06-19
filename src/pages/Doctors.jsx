@@ -7,6 +7,7 @@ import { Link } from "raviger";
 import { useQuery } from "react-query";
 import { Trash } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
+
 import { listDoctors } from "../api/api";
 import NewDoctor from "../components/buttons/NewDoctor";
 import PageLayout from "../components/PageLayout";

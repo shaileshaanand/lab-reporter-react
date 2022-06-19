@@ -1,23 +1,16 @@
 import "./App.css";
 
-import { Title, Burger, useMantineTheme } from "@mantine/core";
-import { useState } from "react";
-import Login from "./pages/Login";
-import NavbarSegmented from "./components/Navbar";
-import { Container } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { PasswordInput, TextInput } from "@mantine/core";
-import { Button, Box } from "@mantine/core";
-import { Stack } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { Center } from "@mantine/core";
-import routes from "./routes";
 import { useRoutes } from "raviger";
-import { useLocalStorageValue } from "@mantine/hooks";
+
+import NavbarSegmented from "./components/Navbar";
 import useToken from "./hooks/use-token";
 import { NotFound } from "./pages/404";
+import routes from "./routes";
 function App() {
   const router = useRoutes(routes);
-  const [token, setToken] = useToken();
+  const [token, _] = useToken();
   // console.log(token);
   return (
     <Box

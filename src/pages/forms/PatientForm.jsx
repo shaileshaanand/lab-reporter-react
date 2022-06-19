@@ -11,6 +11,7 @@ import { showNotification } from "@mantine/notifications";
 import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
+
 import { getPatient, newPatient, updatePatient } from "../../api/api";
 import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
@@ -142,7 +143,7 @@ const PatientForm = ({ id }) => {
           }
         />
         <form
-          onSubmit={form.onSubmit((values) => {
+          onSubmit={form.onSubmit(() => {
             id
               ? updatePatientMutation.mutate(form.values)
               : newPatientMutation.mutate(form.values);

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Navbar, SegmentedControl, Text, createStyles } from "@mantine/core";
-import { Logout, Home2 } from "tabler-icons-react";
+import React from "react";
+
+import { Navbar, createStyles } from "@mantine/core";
 import { Title } from "@mantine/core";
 import { Center } from "@mantine/core";
+import { Divider } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import { ActiveLink } from "raviger";
+import { Logout, Home2 } from "tabler-icons-react";
 import { ReportMedical } from "tabler-icons-react";
 import { Users } from "tabler-icons-react";
 import { Stethoscope } from "tabler-icons-react";
 import { DeviceAnalytics } from "tabler-icons-react";
-import { Link } from "raviger";
-import { ActiveLink } from "raviger";
-import { Divider } from "@mantine/core";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -103,7 +103,7 @@ const tabs = [
 export default function NavbarSegmented() {
   const { classes, cx } = useStyles();
 
-  const [token, setToken] = useLocalStorage({ key: "token" });
+  const [_, setToken] = useLocalStorage({ key: "token" });
   const links = tabs.map((item) => (
     <ActiveLink
       className={cx(classes.link)}

@@ -1,4 +1,5 @@
 import { Box, Title, Group } from "@mantine/core";
+
 import BackButton from "./buttons/BackButton";
 
 const PageLayout = ({ children, title, backButton = false }) => {
