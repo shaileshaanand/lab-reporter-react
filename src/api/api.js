@@ -23,3 +23,19 @@ export const updatePatient = (body, params) => {
 export const getPatient = (params) => {
   return FireRequest("GET", `/patient/:id`, null, false, null, params, true);
 };
+
+export const listDoctors = (pathParam) => {
+  return FireRequest("GET", `/doctor`, null, false, pathParam, null, true);
+};
+
+export const newDoctor = (body) => {
+  return FireRequest("POST", `/doctor`, body, true, null, null, true);
+};
+
+export const updateDoctor = (body, params) => {
+  return FireRequest("PUT", `/doctor/:id`, body, true, null, params, true);
+};
+
+export const getDoctor = (params) => {
+  return FireRequest("GET", `/doctor/:id`, null, false, null, params, true);
+};

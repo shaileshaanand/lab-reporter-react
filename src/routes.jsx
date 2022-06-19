@@ -1,5 +1,7 @@
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import UnprotectedRoute from "./components/routing/UnprotectedRoute";
+import Doctors from "./pages/Doctors";
+import DoctorForm from "./pages/forms/DoctorForm";
 import PatientForm from "./pages/forms/PatientForm";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -12,6 +14,11 @@ const routes = {
   "/patients/new": () => <ProtectedRoute element={<PatientForm />} />,
   "/patients/:id/edit": ({ id }) => (
     <ProtectedRoute element={<PatientForm id={id} />} />
+  ),
+  "/doctors": () => <ProtectedRoute element={<Doctors />} />,
+  "/doctors/new": () => <ProtectedRoute element={<DoctorForm />} />,
+  "/doctors/:id/edit": ({ id }) => (
+    <ProtectedRoute element={<DoctorForm id={id} />} />
   ),
 };
 
