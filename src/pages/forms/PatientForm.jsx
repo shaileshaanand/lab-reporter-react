@@ -1,14 +1,13 @@
 import { TextInput } from "@mantine/core";
 import { Group } from "@mantine/core";
 import { Radio } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import { Button } from "@mantine/core";
 import { RadioGroup } from "@mantine/core";
-import { Overlay } from "@mantine/core";
 import { NumberInput } from "@mantine/core";
-import { Box, Title } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useEffect } from "react";
 import { useMutation } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
@@ -135,10 +134,13 @@ const PatientForm = ({ id }) => {
           position: "relative",
         })}
       >
-        {(newPatientMutation.status === "loading" ||
-          (id && getPatientQuery.isFetching)) && (
-          <Overlay opacity={0.6} color="#000" zIndex={5} />
-        )}
+        <LoadingOverlay
+          visible={
+            id
+              ? getPatientQuery.isFetching || updatePatientQuery.isLoading
+              : newPatientMutation.isLoading
+          }
+        />
         <form
           onSubmit={form.onSubmit((values) => {
             id
