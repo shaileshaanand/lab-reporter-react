@@ -80,7 +80,7 @@ const PatientForm = ({ id }) => {
     }
   );
 
-  const updatePatientQuery = useMutation(
+  const updatePatientMutation = useMutation(
     async (data) => {
       const response = await updatePatient(omit(data), { id });
       return response[1];
@@ -137,14 +137,14 @@ const PatientForm = ({ id }) => {
         <LoadingOverlay
           visible={
             id
-              ? getPatientQuery.isFetching || updatePatientQuery.isLoading
+              ? getPatientQuery.isFetching || updatePatientMutation.isLoading
               : newPatientMutation.isLoading
           }
         />
         <form
           onSubmit={form.onSubmit((values) => {
             id
-              ? updatePatientQuery.mutate(form.values)
+              ? updatePatientMutation.mutate(form.values)
               : newPatientMutation.mutate(form.values);
           })}
         >
