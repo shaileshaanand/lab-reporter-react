@@ -121,15 +121,17 @@ const DoctorForm = ({ id }) => {
               : newDoctorMutation.mutate(form.values);
           })}
         >
-          <Group grow>
+          <Group grow align="start">
             <TextInput
               label="Name"
               name="name"
+              required
               {...form.getInputProps("name")}
             />
             <TextInput
               label="Phone"
               name="phone"
+              required
               {...form.getInputProps("phone")}
             />
           </Group>
