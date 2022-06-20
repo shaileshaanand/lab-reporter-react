@@ -16,13 +16,13 @@ import { getPatient, newPatient, updatePatient } from "../../api/api";
 import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
 
-const PatientForm = ({ id }) => {
+const PatientForm = ({ id, embedded = false, onCreate }) => {
   const form = useForm({
     initialValues: {
       name: "",
       phone: "",
       email: "",
-      age: 0,
+      age: 1,
       gender: "male",
     },
     validate: {
@@ -69,14 +69,17 @@ const PatientForm = ({ id }) => {
       return response[1];
     },
     {
-      onSuccess: () => {
-        form.reset();
+      onSuccess: (data) => {
+        !embedded && form.reset();
         showNotification({
           message: "Patient created",
           title: "Success",
           color: "green",
           icon: <Check />,
         });
+        if (onCreate) {
+          onCreate(data.id);
+        }
       },
     }
   );
@@ -128,7 +131,10 @@ const PatientForm = ({ id }) => {
   // }, []);
 
   return (
-    <PageLayout title={id ? "Update Patient" : "New Patient"} backButton>
+    <PageLayout
+      title={embedded ? null : id ? "Update Patient" : "New Patient"}
+      backButton={!embedded}
+    >
       <Box
         sx={(theme) => ({
           maxWidth: theme.breakpoints.sm,

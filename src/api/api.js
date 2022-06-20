@@ -39,3 +39,31 @@ export const updateDoctor = (body, params) => {
 export const getDoctor = (params) => {
   return FireRequest("GET", `/doctor/:id`, null, false, null, params, true);
 };
+
+export const newUSGReport = (body) => {
+  return FireRequest("POST", `/usg-report`, body, true, null, null, true);
+};
+
+export const getUSGReport = (params) => {
+  return FireRequest("GET", `/usg-report/:id`, null, false, null, params, true);
+};
+
+export const updateUSGReport = (body, params) => {
+  return FireRequest("PUT", `/usg-report/:id`, body, true, null, params, true);
+};
+
+export const deleteUSGReport = (params) => {
+  return FireRequest(
+    "DELETE",
+    `/usg-report/:id`,
+    null,
+    false,
+    null,
+    params,
+    true
+  );
+};
+
+export const listUSGReports = (pathParam) => {
+  return FireRequest("GET", `/usg-report`, null, false, pathParam, null, true);
+};
