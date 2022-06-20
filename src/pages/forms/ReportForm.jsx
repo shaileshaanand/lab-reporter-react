@@ -168,7 +168,6 @@ const ReportForm = ({ id }) => {
     }
   );
 
-  console.log(form.values, { err: { ...form.errors, a: 3 } });
   return (
     <PageLayout title={id ? "Update Report" : "New Report"} backButton>
       <Stepper active={activeStep} breakpoint={"sm"}>
