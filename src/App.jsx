@@ -22,7 +22,15 @@ function App() {
       <Box
         p={3}
         sx={() => {
-          return { flexGrow: 1, maxHeight: "100vh", overflowY: "auto" };
+          return {
+            flexGrow: 1,
+            maxHeight: "100vh",
+            overflowY: "auto",
+            "@media print": {
+              maxHeight: "none",
+              overflowY: "hidden",
+            },
+          };
         }}
       >
         {router ? (

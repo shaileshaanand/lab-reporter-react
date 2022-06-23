@@ -1,7 +1,5 @@
 /* eslint-disable import/order */
 import { useState } from "react";
-
-import { Stepper } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 import PageLayout from "../../components/PageLayout";
@@ -24,15 +22,13 @@ import RichTextEditor from "@mantine/rte";
 import { useMutation } from "react-query";
 import { showNotification } from "@mantine/notifications";
 import { Check } from "tabler-icons-react";
+import { Divider } from "@mantine/core";
+import dayjs from "dayjs";
 const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
-  const [activeStep, setActiveStep] = useState(0);
-  const nextStep = () =>
-    setActiveStep((current) => (current < 3 ? current + 1 : current));
-  const prevStep = () =>
-    setActiveStep((current) => (current > 0 ? current - 1 : current));
 
   const [patientNameSearchText, setPatientNameSearchText] = useState("t3x");
+  const [activeTab, setActiveTab] = useState(0);
 
   const [patientDebouncedSearchText] = useDebouncedValue(
     patientNameSearchText,
@@ -42,7 +38,7 @@ const ReportForm = ({ id }) => {
     initialValues: {
       patient: "",
       referrer: "",
-      date: "",
+      date: dayjs().toDate(),
       sonologist: "",
       findings: "",
       partOfScan: "",
@@ -66,12 +62,12 @@ const ReportForm = ({ id }) => {
         }
         return null;
       },
-      // findings: (value) => {
-      //   if (!value) {
-      //     return "Findings is required";
-      //   }
-      //   return null;
-      // },
+      findings: (value) => {
+        if (!value) {
+          return "Findings is required";
+        }
+        return null;
+      },
       partOfScan: (value) => {
         if (!value) {
           return "Part of scan is required";
@@ -120,17 +116,6 @@ const ReportForm = ({ id }) => {
     </div>
   ));
 
-  const nextAllowed = () => {
-    switch (activeStep) {
-      case 0:
-        return !!patientId;
-      case 1:
-        return true;
-      default:
-        return false;
-    }
-  };
-
   const doctors = useQuery(
     ["listDoctors"],
     async () => {
@@ -155,50 +140,56 @@ const ReportForm = ({ id }) => {
     },
     {
       onSuccess: (data) => {
-        setActiveStep(0);
-        form.reset();
-        data.id &&
+        if (data.id) {
+          form.reset();
+          setPatientId("");
           showNotification({
             title: "USG Report created",
             icon: <Check />,
             color: "green",
             message: "You can view the report in the reports page",
           });
+        }
       },
     }
   );
-
   return (
     <PageLayout title={id ? "Update Report" : "New Report"} backButton>
-      <Stepper active={activeStep} breakpoint={"sm"}>
-        <Stepper.Step label="Patient" description={"Choose or Create Patient"}>
-          <Title order={5}>Patient</Title>
-          <Tabs>
-            <Tabs.Tab label="Existing">
-              <Select
-                label="Find Patient by Name"
-                onChange={(value) => {
-                  setPatientId(value);
-                  form.setFieldValue("patient", value);
-                }}
-                value={patientId}
-                data={patients.data || []}
-                searchable
-                onSearchChange={setPatientNameSearchText}
-                itemComponent={SelectItem}
-              />
-            </Tabs.Tab>
-            <Tabs.Tab label="New">
-              <PatientForm
-                embedded
-                onCreate={(id) => {
-                  setPatientId(id);
-                }}
-              />
-            </Tabs.Tab>
-          </Tabs>
-        </Stepper.Step>
-        <Stepper.Step label="Report" description={"Report Header"}>
+      <Title order={5}>Patient</Title>
+      <Tabs active={activeTab} onTabChange={setActiveTab}>
+        <Tabs.Tab label="Existing">
+          <Select
+            label="Find Patient by Name"
+            onChange={(value) => {
+              setPatientId(value);
+              form.setFieldValue("patient", value);
+            }}
+            value={patientId}
+            data={patients.data || []}
+            searchable
+            clearable
+            onSearchChange={setPatientNameSearchText}
+            itemComponent={SelectItem}
+          />
+        </Tabs.Tab>
+        <Tabs.Tab label="New">
+          <PatientForm
+            embedded
+            onCreate={(id) => {
+              console.log({ id });
+              setActiveTab(0);
+              setPatientId(id);
+              form.setFieldValue("patient", id);
+            }}
+            id={patientId}
+          />
+        </Tabs.Tab>
+      </Tabs>
+      {patientId && (
+        <>
+          <Space h="md" />
+          <Divider />
+          <Space h="md" />
           <Title order={5}>Report</Title>
           <form>
             <Group grow>
@@ -232,9 +223,12 @@ const ReportForm = ({ id }) => {
               />
             </Group>
           </form>
-        </Stepper.Step>
-        <Stepper.Step label="Findings" description={"Build Report"}>
+
+          <Space h="md" />
+          <Divider />
+          <Space h="md" />
           <Title order={5}>Findings</Title>
+          <Space h="md" />
           <RichTextEditor {...form.getInputProps("findings")} />
           <Group position="right">
             <Button
@@ -247,17 +241,8 @@ const ReportForm = ({ id }) => {
               Create Report
             </Button>
           </Group>
-        </Stepper.Step>
-      </Stepper>
-      <Space h={"md"} />
-      <Group position="center">
-        <Button onClick={prevStep} disabled={activeStep === 0}>
-          Previous
-        </Button>
-        <Button onClick={nextStep} disabled={!nextAllowed()}>
-          Next
-        </Button>
-      </Group>
+        </>
+      )}
     </PageLayout>
   );
 };

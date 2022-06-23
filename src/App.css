@@ -1,0 +1,29 @@
+@page {
+  margin-top: 1.7in;
+  /* margin-left: 1in; */
+  /* margin-right: 1in; */
+  size: A4;
+}
+.desctable th,
+.desctable td {
+  font-weight: bold;
+}
+.desctable th {
+  text-align: start;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.desctable th::after {
+  content: ":-";
+  padding-left: 50px;
+}
+
+.desctable td {
+  padding-left: 10px;
+}
+
+.quill p {
+  font-size: 1rem;
+}

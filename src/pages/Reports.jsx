@@ -36,6 +36,7 @@ const Reports = () => {
   return (
     <PageLayout title="Reports">
       <NewReport />
+      <Space h={"md"} />
       <Group align={"end"}>
         <Box sx={{ width: "100px" }}>
           <Select
@@ -86,7 +87,11 @@ const Reports = () => {
                   </td>
                   <td>
                     <Group spacing={"xs"}>
-                      <ActionIcon color={"blue"}>
+                      <ActionIcon
+                        color={"blue"}
+                        component={Link}
+                        href={`/reports/${report.id}`}
+                      >
                         <Printer />
                       </ActionIcon>
                       <ActionIcon

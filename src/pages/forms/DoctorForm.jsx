@@ -95,7 +95,7 @@ const DoctorForm = ({ id }) => {
         return patient;
       },
       onSuccess: (patient) => {
-        form.setValues(patient);
+        form.setValues({ email: "", phone: "", name: "", ...patient });
       },
     }
   );

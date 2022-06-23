@@ -7,6 +7,7 @@ import ReportForm from "./pages/forms/ReportForm";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Patients from "./pages/Patients";
+import Report from "./pages/Report";
 import Reports from "./pages/Reports";
 
 const routes = {
@@ -24,6 +25,7 @@ const routes = {
   ),
   "/reports": () => <ProtectedRoute element={<Reports />} />,
   "/reports/new": () => <ProtectedRoute element={<ReportForm />} />,
+  "/reports/:id": ({ id }) => <ProtectedRoute element={<Report id={id} />} />,
 };
 
 export default routes;

@@ -98,6 +98,9 @@ const PatientForm = ({ id, embedded = false, onCreate }) => {
             color: "green",
             icon: <Check />,
           });
+        if (onCreate) {
+          onCreate(data.id);
+        }
       },
     }
   );
