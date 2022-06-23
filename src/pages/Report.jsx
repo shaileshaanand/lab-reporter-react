@@ -21,7 +21,7 @@ const Report = ({ id }) => {
     <Box>
       {isLoading ? (
         <Center style={{ height: "500px" }}>
-          <Loader variant="bars" />
+          <Loader variant="dots" />
         </Center>
       ) : (
         <Box m={10}>
