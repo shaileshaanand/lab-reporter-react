@@ -10,13 +10,17 @@ import { Space } from "@mantine/core";
 import { TextInput } from "@mantine/core";
 import { Select } from "@mantine/core";
 import { Loader } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
+import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { Link } from "raviger";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { Trash } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 
-import { listPatients } from "../api/api";
+import { deletePatient, listPatients } from "../api/api";
 import NewPatient from "../components/buttons/NewPatient";
 import PageLayout from "../components/PageLayout";
 import { omit } from "../helpers/utils";
@@ -27,6 +31,8 @@ const Patients = () => {
   const [limitOptions, setLimitOptions] = useState(["10", "25", "50", "100"]);
   const [search, setSearch] = useState("");
   const [name] = useDebouncedValue(search, 500);
+  const queryClient = useQueryClient();
+  const modals = useModals();
   const { data, isLoading } = useQuery(
     ["listPatients", { limit, page, name }],
     async () => {
@@ -43,6 +49,35 @@ const Patients = () => {
       keepPreviousData: true,
     }
   );
+  const deletePatientMutation = useMutation(
+    async (id) => {
+      await deletePatient({ id });
+    },
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "Patient deleted successfully",
+          title: "Success",
+          color: "green",
+          icon: <Check />,
+        });
+        queryClient.invalidateQueries("listPatients");
+      },
+    }
+  );
+  const openConfirmModal = (patient) =>
+    modals.openConfirmModal({
+      title: `Are you sure you want to delete ${patient.name}`,
+      children: (
+        <Text size="sm">
+          This action cannot be undone. This will permanently delete all data
+          associated with this patient.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => deletePatientMutation.mutate(patient.id),
+    });
   return (
     <PageLayout title="Patients">
       <NewPatient mb={20} />
@@ -110,7 +145,12 @@ const Patients = () => {
                         >
                           <Pencil />
                         </ActionIcon>
-                        <ActionIcon color={"red"}>
+                        <ActionIcon
+                          color={"red"}
+                          onClick={() => {
+                            openConfirmModal(patient);
+                          }}
+                        >
                           <Trash />
                         </ActionIcon>
                       </Group>

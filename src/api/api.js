@@ -24,6 +24,10 @@ export const getPatient = (params) => {
   return FireRequest("GET", `/patient/:id`, null, false, null, params, true);
 };
 
+export const deletePatient = (params) => {
+  return FireRequest("DELETE", `/patient/:id`, null, false, null, params, true);
+};
+
 export const listDoctors = (pathParam) => {
   return FireRequest("GET", `/doctor`, null, false, pathParam, null, true);
 };
