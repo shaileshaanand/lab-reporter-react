@@ -2,21 +2,58 @@ import { Group } from "@mantine/core";
 import { ActionIcon } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { Loader } from "@mantine/core";
-import { Space, Table, Box } from "@mantine/core";
+import { Space, Table, Box, Text } from "@mantine/core";
+import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { Link } from "raviger";
-import { useQuery } from "react-query";
+import { useQueryClient } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { Trash } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
 
-import { listDoctors } from "../api/api";
+import { deleteDoctor, listDoctors } from "../api/api";
 import NewDoctor from "../components/buttons/NewDoctor";
 import PageLayout from "../components/PageLayout";
 
 const Doctors = () => {
+  const queryClient = useQueryClient();
   const listDoctorsQuery = useQuery(["listDoctors"], async () => {
     const response = await listDoctors();
     return response[1];
   });
+
+  const deleteDoctorMutation = useMutation(
+    async (id) => {
+      await deleteDoctor({ id });
+    },
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "Doctor deleted successfully",
+          title: "Success",
+          color: "green",
+          icon: <Check />,
+        });
+        queryClient.invalidateQueries("listDoctors");
+      },
+    }
+  );
+
+  const modals = useModals();
+  const openConfirmModal = (doctor) =>
+    modals.openConfirmModal({
+      title: `Are you sure you want to delete ${doctor.name}`,
+      children: (
+        <Text size="sm">
+          This action cannot be undone. This will permanently delete all data
+          associated with this doctor.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => deleteDoctorMutation.mutate(doctor.id),
+    });
   return (
     <PageLayout title="Doctors">
       <NewDoctor />
@@ -51,7 +88,12 @@ const Doctors = () => {
                       >
                         <Pencil />
                       </ActionIcon>
-                      <ActionIcon color={"red"}>
+                      <ActionIcon
+                        color={"red"}
+                        onClick={() => {
+                          openConfirmModal(doctor);
+                        }}
+                      >
                         <Trash />
                       </ActionIcon>
                     </Group>

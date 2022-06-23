@@ -40,6 +40,10 @@ export const getDoctor = (params) => {
   return FireRequest("GET", `/doctor/:id`, null, false, null, params, true);
 };
 
+export const deleteDoctor = (params) => {
+  return FireRequest("DELETE", `/doctor/:id`, null, false, null, params, true);
+};
+
 export const newUSGReport = (body) => {
   return FireRequest("POST", `/usg-report`, body, true, null, null, true);
 };
