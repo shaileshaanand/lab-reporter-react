@@ -65,7 +65,7 @@ const Report = ({ id }) => {
                     <th>
                       <Text weight={"bold"}>Region Examined</Text>
                     </th>
-                    <td>{capitalize(data.patient.gender)}</td>
+                    <td>{capitalize(data.partOfScan)}</td>
                   </tr>
                 </tbody>
               </table>
