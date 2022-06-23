@@ -39,7 +39,6 @@ const ReportForm = ({ id }) => {
       patient: "",
       referrer: "",
       date: dayjs().toDate(),
-      sonologist: "",
       findings: "",
       partOfScan: "",
     },
@@ -53,12 +52,6 @@ const ReportForm = ({ id }) => {
       date: (value) => {
         if (!value) {
           return "Date is required";
-        }
-        return null;
-      },
-      sonologist: (value) => {
-        if (!value) {
-          return "Sonologist is required";
         }
         return null;
       },
@@ -197,13 +190,6 @@ const ReportForm = ({ id }) => {
                 label="Referrer"
                 name="referrer"
                 {...form.getInputProps("referrer")}
-                data={doctors.data || []}
-                required
-              />
-              <Select
-                label="Sonologist"
-                name="sonologist"
-                {...form.getInputProps("sonologist")}
                 data={doctors.data || []}
                 required
               />
