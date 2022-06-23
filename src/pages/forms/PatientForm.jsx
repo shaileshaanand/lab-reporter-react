@@ -9,6 +9,7 @@ import { Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useMutation } from "react-query";
+import { useQueryClient } from "react-query";
 import { useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 
@@ -17,6 +18,7 @@ import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
 
 const PatientForm = ({ id, embedded = false, onCreate }) => {
+  const queryClient = useQueryClient();
   const form = useForm({
     initialValues: {
       name: "",
@@ -77,6 +79,7 @@ const PatientForm = ({ id, embedded = false, onCreate }) => {
           color: "green",
           icon: <Check />,
         });
+        queryClient.invalidateQueries("listPatients");
         if (onCreate) {
           onCreate(data.id);
         }
