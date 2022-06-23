@@ -8,14 +8,20 @@ import { Center } from "@mantine/core";
 import { Loader } from "@mantine/core";
 import { Space } from "@mantine/core";
 import { Pagination } from "@mantine/core";
+import { Text } from "@mantine/core";
+import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import dayjs from "dayjs";
 import { Link } from "raviger";
 import { useQuery } from "react-query";
+import { useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { Printer } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
 import { Trash } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 
-import { listUSGReports } from "../api/api";
+import { deleteUSGReport, listUSGReports } from "../api/api";
 import NewReport from "../components/buttons/NewReport";
 import PageLayout from "../components/PageLayout";
 
@@ -23,6 +29,8 @@ const Reports = () => {
   const [limit, setLimit] = useState("10");
   const [page, setPage] = useState(1);
   const [limitOptions, setLimitOptions] = useState(["10", "25", "50", "100"]);
+  const queryClient = useQueryClient();
+  const modals = useModals();
   const reports = useQuery(
     ["reports", { page, limit }],
     async () => {
@@ -33,6 +41,35 @@ const Reports = () => {
       keepPreviousData: true,
     }
   );
+  const deleteUSGReportMutation = useMutation(
+    async (id) => {
+      await deleteUSGReport({ id });
+    },
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "Report deleted successfully",
+          title: "Success",
+          color: "green",
+          icon: <Check />,
+        });
+        queryClient.invalidateQueries("reports");
+      },
+    }
+  );
+  const openConfirmModal = (USGReport) =>
+    modals.openConfirmModal({
+      title: `Are you sure you want to delete the report for ${USGReport.patient.name}`,
+      children: (
+        <Text size="sm">
+          This action cannot be undone. This will permanently delete all data
+          associated with this patient.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => deleteUSGReportMutation.mutate(USGReport.id),
+    });
   return (
     <PageLayout title="Reports">
       <NewReport />
@@ -101,7 +138,10 @@ const Reports = () => {
                       >
                         <Pencil />
                       </ActionIcon>
-                      <ActionIcon color={"red"}>
+                      <ActionIcon
+                        color={"red"}
+                        onClick={() => openConfirmModal(report)}
+                      >
                         <Trash />
                       </ActionIcon>
                     </Group>
