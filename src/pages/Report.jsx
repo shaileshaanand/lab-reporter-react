@@ -117,7 +117,7 @@ const Report = ({ id }) => {
               <Center>
                 <Text weight={"bold"}>SONOLOGIST</Text>
               </Center>
-              <Text weight={"bold"}>MAA LALITA HOSPITAL, CHHATTARPUR</Text>
+              <Text weight={"bold"}>ULTRASONOGRAPHY CENTRE, CHHATTARPUR</Text>
             </Box>
           </Group>
         </Box>
