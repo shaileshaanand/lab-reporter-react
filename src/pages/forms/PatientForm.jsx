@@ -123,7 +123,7 @@ const PatientForm = ({ id, embedded = false, onCreate }) => {
         return patient;
       },
       onSuccess: (data) => {
-        form.setValues(data);
+        form.setValues({ email: "", ...data });
       },
     }
   );

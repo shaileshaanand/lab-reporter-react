@@ -26,6 +26,9 @@ const routes = {
   "/reports": () => <ProtectedRoute element={<Reports />} />,
   "/reports/new": () => <ProtectedRoute element={<ReportForm />} />,
   "/reports/:id": ({ id }) => <ProtectedRoute element={<Report id={id} />} />,
+  "/reports/:id/edit": ({ id }) => (
+    <ProtectedRoute element={<ReportForm id={id} />} />
+  ),
 };
 
 export default routes;
