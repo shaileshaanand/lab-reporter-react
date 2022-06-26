@@ -8,6 +8,7 @@ import { Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import RichTextEditor from "@mantine/rte";
+import { useQueryParams } from "raviger";
 import { useMutation, useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 
@@ -16,10 +17,11 @@ import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
 
 const TemplateForm = ({ id }) => {
+  const [{ content }] = useQueryParams();
   const form = useForm({
     initialValues: {
       name: "",
-      content: "",
+      content: content || "",
     },
     validate: {
       name: (value) => {

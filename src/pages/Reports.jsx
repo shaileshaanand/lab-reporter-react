@@ -20,6 +20,7 @@ import { Printer } from "tabler-icons-react";
 import { Pencil } from "tabler-icons-react";
 import { Trash } from "tabler-icons-react";
 import { Check } from "tabler-icons-react";
+import { DeviceFloppy } from "tabler-icons-react";
 
 import { deleteUSGReport, listUSGReports } from "../api/api";
 import NewReport from "../components/buttons/NewReport";
@@ -143,6 +144,15 @@ const Reports = () => {
                         onClick={() => openConfirmModal(report)}
                       >
                         <Trash />
+                      </ActionIcon>
+                      <ActionIcon
+                        color={"green"}
+                        component={Link}
+                        href={`/templates/new?content=${encodeURIComponent(
+                          report.findings
+                        )}`}
+                      >
+                        <DeviceFloppy />
                       </ActionIcon>
                     </Group>
                   </td>
