@@ -6,11 +6,17 @@ import PageLayout from "../../components/PageLayout";
 import { Button } from "@mantine/core";
 import { Group } from "@mantine/core";
 import { Space } from "@mantine/core";
-import { Tabs } from "@mantine/core";
+import { Tabs, Box } from "@mantine/core";
 import { Select } from "@mantine/core";
 import { useQuery } from "react-query";
 import { useDebouncedValue } from "@mantine/hooks";
-import { listDoctors, listPatients, newUSGReport } from "../../api/api";
+import {
+  getUSGReport,
+  listDoctors,
+  listPatients,
+  newUSGReport,
+  updateUSGReport,
+} from "../../api/api";
 import { capitalize, omit } from "../../helpers/utils";
 import { Text } from "@mantine/core";
 import { forwardRef } from "react";
@@ -24,6 +30,7 @@ import { showNotification } from "@mantine/notifications";
 import { Check } from "tabler-icons-react";
 import { Divider } from "@mantine/core";
 import dayjs from "dayjs";
+import { LoadingOverlay } from "@mantine/core";
 const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
 
@@ -146,89 +153,153 @@ const ReportForm = ({ id }) => {
       },
     }
   );
+
+  const updateUSGMutation = useMutation(
+    async (data) => {
+      const response = await updateUSGReport(omit(data), { id });
+      return response[1];
+    },
+    {
+      onSuccess: (data) => {
+        if (data.id) {
+          form.reset();
+          setPatientId("");
+          showNotification({
+            title: "USG Report updated",
+            icon: <Check />,
+            color: "green",
+            message: "You can view the updated report in the reports page",
+          });
+        }
+      },
+    }
+  );
+
+  const getUSGReportQuery = useQuery(
+    ["getUSGReport", { id }],
+    async () => {
+      const response = await getUSGReport({ id });
+      return response[1];
+    },
+    {
+      enabled: !!id,
+      select: (response) => {
+        delete response.createdAt;
+        delete response.updatedAt;
+        return {
+          ...response,
+          date: dayjs(response.date).toDate(),
+          referrer: response.referrer?.id,
+          patient: response.patient?.id,
+        };
+      },
+      onSuccess: (data) => {
+        if (data.id) {
+          delete data.id;
+          form.setValues(data);
+          setPatientId(data.patient);
+        }
+      },
+    }
+  );
+
   return (
     <PageLayout title={id ? "Update Report" : "New Report"} backButton>
-      <Title order={5}>Patient</Title>
-      <Tabs active={activeTab} onTabChange={setActiveTab}>
-        <Tabs.Tab label="Existing">
-          <Select
-            label="Find Patient by Name"
-            onChange={(value) => {
-              setPatientId(value);
-              form.setFieldValue("patient", value);
-            }}
-            value={patientId}
-            data={patients.data || []}
-            searchable
-            clearable
-            onSearchChange={setPatientNameSearchText}
-            itemComponent={SelectItem}
-          />
-        </Tabs.Tab>
-        <Tabs.Tab label="New">
-          <PatientForm
-            embedded
-            onCreate={(id) => {
-              console.log({ id });
-              setActiveTab(0);
-              setPatientId(id);
-              form.setFieldValue("patient", id);
-            }}
-            id={patientId}
-          />
-        </Tabs.Tab>
-      </Tabs>
-      {patientId && (
-        <>
-          <Space h="md" />
-          <Divider />
-          <Space h="md" />
-          <Title order={5}>Report</Title>
-          <form>
-            <Group grow>
-              <Select
-                label="Referrer"
-                name="referrer"
-                {...form.getInputProps("referrer")}
-                data={doctors.data || []}
-                required
-              />
-              <DatePicker
-                placeholder="Pick Date"
-                label="Date"
-                required
-                {...form.getInputProps("date")}
-              />
-            </Group>
-            <Group grow>
-              <TextInput
-                label="Part of Scan"
-                name="partOfScan"
-                {...form.getInputProps("partOfScan")}
-                required
-              />
-            </Group>
-          </form>
-
-          <Space h="md" />
-          <Divider />
-          <Space h="md" />
-          <Title order={5}>Findings</Title>
-          <Space h="md" />
-          <RichTextEditor {...form.getInputProps("findings")} />
-          <Group position="right">
-            <Button
-              size={"lg"}
-              mt={20}
-              onClick={() => {
-                newUSGMutation.mutate(form.values);
+      <Box sx={{ position: "relative" }}>
+        <LoadingOverlay
+          visible={
+            id
+              ? getUSGReportQuery.isLoading || updateUSGMutation.isLoading
+              : newUSGMutation.isLoading
+          }
+        />
+        <Title order={5}>Patient</Title>
+        <Tabs active={activeTab} onTabChange={setActiveTab}>
+          <Tabs.Tab label="Existing">
+            <Select
+              label="Find Patient by Name"
+              onChange={(value) => {
+                setPatientId(value);
+                form.setFieldValue("patient", value);
               }}
-            >
-              Create Report
-            </Button>
-          </Group>
-        </>
-      )}
+              value={patientId}
+              data={patients.data || []}
+              searchable={!id}
+              clearable={!id}
+              onSearchChange={setPatientNameSearchText}
+              itemComponent={SelectItem}
+              disabled={!!id}
+            />
+          </Tabs.Tab>
+          {!id && (
+            <Tabs.Tab label="New">
+              <PatientForm
+                embedded
+                onCreate={(id) => {
+                  console.log({ id });
+                  setActiveTab(0);
+                  setPatientId(id);
+                  form.setFieldValue("patient", id);
+                }}
+                id={patientId}
+              />
+            </Tabs.Tab>
+          )}
+        </Tabs>
+        {patientId && (
+          <>
+            <Space h="md" />
+            <Divider />
+            <Space h="md" />
+            <Title order={5}>Report</Title>
+            <form>
+              <Group grow>
+                <Select
+                  label="Referrer"
+                  name="referrer"
+                  {...form.getInputProps("referrer")}
+                  data={doctors.data || []}
+                  required
+                />
+                <DatePicker
+                  placeholder="Pick Date"
+                  label="Date"
+                  required
+                  {...form.getInputProps("date")}
+                />
+              </Group>
+              <Group grow>
+                <TextInput
+                  label="Part of Scan"
+                  name="partOfScan"
+                  {...form.getInputProps("partOfScan")}
+                  required
+                />
+              </Group>
+            </form>
+
+            <Space h="md" />
+            <Divider />
+            <Space h="md" />
+            <Title order={5}>Findings</Title>
+            <Space h="md" />
+            <RichTextEditor {...form.getInputProps("findings")} />
+          </>
+        )}
+      </Box>
+      <Group position="right">
+        <Button
+          size={"lg"}
+          mt={20}
+          onClick={() => {
+            id
+              ? updateUSGMutation.mutate(form.values)
+              : newUSGMutation.mutate(form.values);
+          }}
+        >
+          {id ? "Update" : "Create"} Report
+        </Button>
+      </Group>
     </PageLayout>
   );
 };
