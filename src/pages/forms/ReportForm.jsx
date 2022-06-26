@@ -27,7 +27,7 @@ import dayjs from "dayjs";
 const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
 
-  const [patientNameSearchText, setPatientNameSearchText] = useState("t3x");
+  const [patientNameSearchText, setPatientNameSearchText] = useState("");
   const [activeTab, setActiveTab] = useState(0);
 
   const [patientDebouncedSearchText] = useDebouncedValue(
