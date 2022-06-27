@@ -9,7 +9,6 @@ import { useQuery } from "react-query";
 import { Printer } from "tabler-icons-react";
 
 import { getUSGReport } from "../api/api";
-import { capitalize } from "../helpers/utils";
 
 const Report = ({ id }) => {
   const { data, isLoading } = useQuery(["report", { id }], async () => {
@@ -41,21 +40,19 @@ const Report = ({ id }) => {
           </Button>
 
           <Grid columns={12}>
-            <Grid.Col span={6}>
+            <Grid.Col span={3}>
               <Group position="left" grow>
                 <Text size={"lg"} weight={"bold"}>
                   Name of Patient
                 </Text>
-                <Text
-                  size={"lg"}
-                  weight={"bold"}
-                  className="header__key_before"
-                >
-                  {data.patient.name}
-                </Text>
               </Group>
             </Grid.Col>
-            <Grid.Col span={4} offset={2}>
+            <Grid.Col span={5}>
+              <Text size={"lg"} weight={"bold"} className="header__key_before">
+                {data.patient.name}
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={4}>
               <Group position="right">
                 <Text weight={"bold"} className="header__key_after">
                   Date
@@ -77,30 +74,22 @@ const Report = ({ id }) => {
                 </Text>
               </Group>
             </Grid.Col>
-            <Grid.Col span={6}>
-              <Group position="left" grow>
-                <Text weight={"bold"}>Region Examined</Text>
-                <Text weight={"bold"} className="header__key_before">
-                  {data.partOfScan}
-                </Text>
-              </Group>
-            </Grid.Col>
             <Grid.Col span={3}>
-              <Group position="center">
-                <Text weight={"bold"} className="header__key_after">
-                  Age
-                </Text>
-                <Text weight={"bold"}>
-                  {data.patient.age} {data.patient.age === 1 ? "Year" : "Years"}
-                </Text>
-              </Group>
+              <Text weight={"bold"}>Region Examined</Text>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Text weight={"bold"} className="header__key_before">
+                {data.partOfScan}
+              </Text>
             </Grid.Col>
             <Grid.Col span={3}>
               <Group position="right">
                 <Text weight={"bold"} className="header__key_after">
-                  Sex
+                  Age/Sex
                 </Text>
-                <Text weight={"bold"}>{capitalize(data.patient.gender)}</Text>
+                <Text weight={"bold"}>
+                  {data.patient.age}/{data.patient.gender[0].toUpperCase()}
+                </Text>
               </Group>
             </Grid.Col>
           </Grid>
