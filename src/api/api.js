@@ -75,3 +75,31 @@ export const deleteUSGReport = (params) => {
 export const listUSGReports = (pathParam) => {
   return FireRequest("GET", `/usg-report`, null, false, pathParam, null, true);
 };
+
+export const newTemplate = (body) => {
+  return FireRequest("POST", `/template`, body, true, null, null, true);
+};
+
+export const updateTemplate = (body, params) => {
+  return FireRequest("PUT", `/template/:id`, body, true, null, params, true);
+};
+
+export const getTemplate = (params) => {
+  return FireRequest("GET", `/template/:id`, null, false, null, params, true);
+};
+
+export const deleteTemplate = (params) => {
+  return FireRequest(
+    "DELETE",
+    `/template/:id`,
+    null,
+    false,
+    null,
+    params,
+    true
+  );
+};
+
+export const listTemplates = (pathParam) => {
+  return FireRequest("GET", `/template`, null, false, pathParam, null, true);
+};
