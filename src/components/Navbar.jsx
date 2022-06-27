@@ -11,6 +11,7 @@ import { ReportMedical } from "tabler-icons-react";
 import { Users } from "tabler-icons-react";
 import { Stethoscope } from "tabler-icons-react";
 import { DeviceAnalytics } from "tabler-icons-react";
+import { Template } from "tabler-icons-react";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -100,6 +101,7 @@ const tabs = [
   { link: "/reports", label: "Reports", icon: ReportMedical },
   { link: "/patients", label: "Patients", icon: Users },
   { link: "/doctors", label: "Doctors", icon: Stethoscope },
+  { link: "/templates", label: "Templates", icon: Template },
   { link: "/analytics", label: "Analytics", icon: DeviceAnalytics },
 ];
 

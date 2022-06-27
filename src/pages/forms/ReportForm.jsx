@@ -14,6 +14,7 @@ import {
   getUSGReport,
   listDoctors,
   listPatients,
+  listTemplates,
   newUSGReport,
   updateUSGReport,
 } from "../../api/api";
@@ -36,6 +37,7 @@ const ReportForm = ({ id }) => {
 
   const [patientNameSearchText, setPatientNameSearchText] = useState("");
   const [activeTab, setActiveTab] = useState(0);
+  const [findingsId, setFindingsId] = useState(0);
 
   const [patientDebouncedSearchText] = useDebouncedValue(
     patientNameSearchText,
@@ -203,6 +205,21 @@ const ReportForm = ({ id }) => {
     }
   );
 
+  const listTemplatesQuery = useQuery(
+    ["listTemplates"],
+    async () => {
+      const response = await listTemplates();
+      return response[1];
+    },
+    {
+      select: (response) => {
+        return response.map((template) => ({
+          label: template.name,
+          value: template.content,
+        }));
+      },
+    }
+  );
   return (
     <PageLayout title={id ? "Update Report" : "New Report"} backButton>
       <Box sx={{ position: "relative" }}>
@@ -236,7 +253,6 @@ const ReportForm = ({ id }) => {
               <PatientForm
                 embedded
                 onCreate={(id) => {
-                  console.log({ id });
                   setActiveTab(0);
                   setPatientId(id);
                   form.setFieldValue("patient", id);
@@ -281,9 +297,22 @@ const ReportForm = ({ id }) => {
             <Space h="md" />
             <Divider />
             <Space h="md" />
-            <Title order={5}>Findings</Title>
+            <Group position={"apart"}>
+              <Title order={5}>Findings</Title>
+              <Select
+                data={listTemplatesQuery.data}
+                placeholder="Choose Template"
+                onChange={(template) => {
+                  form.setFieldValue("findings", template);
+                  setFindingsId(findingsId + 1);
+                }}
+              />
+            </Group>
             <Space h="md" />
-            <RichTextEditor {...form.getInputProps("findings")} />
+            <RichTextEditor
+              key={findingsId}
+              {...form.getInputProps("findings")}
+            />
           </>
         )}
       </Box>
