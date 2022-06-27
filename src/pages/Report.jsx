@@ -39,63 +39,69 @@ const Report = ({ id }) => {
           >
             Print
           </Button>
-          <Grid columns={10}>
+
+          <Grid columns={12}>
             <Grid.Col span={6}>
-              <table className="desctable">
-                <tbody>
-                  <tr>
-                    <th>
-                      <Text size="lg" weight={"bold"}>
-                        Name of Patient
-                      </Text>
-                    </th>
-                    <td>
-                      <Text size="lg" weight={"bold"}>
-                        {data.patient.name}
-                      </Text>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <Text weight={"bold"}>Referred By</Text>
-                    </th>
-                    <td>{data.referrer.name}</td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <Text weight={"bold"}>Region Examined</Text>
-                    </th>
-                    <td>{capitalize(data.partOfScan)}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <Group position="left" grow>
+                <Text size={"lg"} weight={"bold"}>
+                  Name of Patient
+                </Text>
+                <Text
+                  size={"lg"}
+                  weight={"bold"}
+                  className="header__key_before"
+                >
+                  {data.patient.name}
+                </Text>
+              </Group>
             </Grid.Col>
-            <Grid.Col span={4}>
-              <table className="desctable">
-                <tbody>
-                  <tr>
-                    <th>
-                      <Text weight={"bold"}>Date</Text>
-                    </th>
-                    <td>{dayjs(data.date).format("DD/MM/YYYY")}</td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <Text weight={"bold"}>Age</Text>
-                    </th>
-                    <td>
-                      {data.patient.age}{" "}
-                      {data.patient.age === 1 ? "Year" : "Years"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <Text weight={"bold"}>Sex</Text>
-                    </th>
-                    <td>{capitalize(data.patient.gender)}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <Grid.Col span={4} offset={2}>
+              <Group position="right">
+                <Text weight={"bold"} className="header__key_after">
+                  Date
+                </Text>
+                <Text weight={"bold"}>
+                  {dayjs(data.date).format("DD/MM/YYYY")}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+              <Group position="left" grow>
+                <Text weight={"bold"}>Referred By</Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={9}>
+              <Group position="left" grow>
+                <Text weight={"bold"} className="header__key_before">
+                  {data.referrer.name}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Group position="left" grow>
+                <Text weight={"bold"}>Region Examined</Text>
+                <Text weight={"bold"} className="header__key_before">
+                  {data.partOfScan}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+              <Group position="center">
+                <Text weight={"bold"} className="header__key_after">
+                  Age
+                </Text>
+                <Text weight={"bold"}>
+                  {data.patient.age} {data.patient.age === 1 ? "Year" : "Years"}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+              <Group position="right">
+                <Text weight={"bold"} className="header__key_after">
+                  Sex
+                </Text>
+                <Text weight={"bold"}>{capitalize(data.patient.gender)}</Text>
+              </Group>
             </Grid.Col>
           </Grid>
           <Center>
