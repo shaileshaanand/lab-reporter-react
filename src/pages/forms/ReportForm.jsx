@@ -20,11 +20,11 @@ import { Check } from "tabler-icons-react";
 
 import {
   getUSGReport,
-  listDoctors,
   listTemplates,
   newUSGReport,
   updateUSGReport,
 } from "../../api/api";
+import DoctorSelect from "../../components/doctor/DoctorSelect";
 import PageLayout from "../../components/PageLayout";
 import PatientSearchSelect from "../../components/patient/PatientSearchSelect";
 import { omit } from "../../helpers/utils";
@@ -71,23 +71,6 @@ const ReportForm = ({ id }) => {
       },
     },
   });
-
-  const doctors = useQuery(
-    ["listDoctors"],
-    async () => {
-      const response = await listDoctors();
-      return response[1];
-    },
-    {
-      keepPreviousData: true,
-      select: (response) => {
-        return response.map((doctor) => ({
-          label: doctor.name,
-          value: doctor.id,
-        }));
-      },
-    }
-  );
 
   const newUSGMutation = useMutation(
     async (data) => {
@@ -218,12 +201,10 @@ const ReportForm = ({ id }) => {
             <Title order={5}>Report</Title>
             <form>
               <Group grow>
-                <Select
+                <DoctorSelect
                   label="Referrer"
                   name="referrer"
                   {...form.getInputProps("referrer")}
-                  data={doctors.data || []}
-                  required
                 />
                 <DatePicker
                   placeholder="Pick Date"
