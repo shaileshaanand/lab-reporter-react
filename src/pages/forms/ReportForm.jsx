@@ -1,15 +1,26 @@
-/* eslint-disable import/order */
 import { useState } from "react";
-import { useForm } from "@mantine/form";
+import { forwardRef } from "react";
 
-import PageLayout from "../../components/PageLayout";
-import { Button } from "@mantine/core";
+import { Text } from "@mantine/core";
+import { Select } from "@mantine/core";
+import { Tabs, Box } from "@mantine/core";
 import { Group } from "@mantine/core";
 import { Space } from "@mantine/core";
-import { Tabs, Box } from "@mantine/core";
-import { Select } from "@mantine/core";
-import { useQuery } from "react-query";
+import { Button } from "@mantine/core";
+import { Title } from "@mantine/core";
+import { TextInput } from "@mantine/core";
+import { Divider } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import { useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
+import RichTextEditor from "@mantine/rte";
+import dayjs from "dayjs";
+import { useQuery } from "react-query";
+import { useMutation } from "react-query";
+import { Check } from "tabler-icons-react";
+
 import {
   getUSGReport,
   listDoctors,
@@ -18,20 +29,10 @@ import {
   newUSGReport,
   updateUSGReport,
 } from "../../api/api";
+import PageLayout from "../../components/PageLayout";
 import { capitalize, omit } from "../../helpers/utils";
-import { Text } from "@mantine/core";
-import { forwardRef } from "react";
 import PatientForm from "./PatientForm";
-import { Title } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
-import { TextInput } from "@mantine/core";
-import RichTextEditor from "@mantine/rte";
-import { useMutation } from "react-query";
-import { showNotification } from "@mantine/notifications";
-import { Check } from "tabler-icons-react";
-import { Divider } from "@mantine/core";
-import dayjs from "dayjs";
-import { LoadingOverlay } from "@mantine/core";
+
 const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
 
