@@ -104,7 +104,7 @@ const Reports = () => {
                   <td>{report.partOfScan}</td>
                   <td>{dayjs(report.date).format("DD MMM, YYYY")}</td>
                   <td>
-                    {dayjs(report.updatedAt).format("DD MMM, YYYY - h:m A")}
+                    {dayjs(report.updatedAt).format("DD MMM, YYYY - h:mm A")}
                   </td>
                   <td>
                     <Group spacing={"xs"}>
