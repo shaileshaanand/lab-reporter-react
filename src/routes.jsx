@@ -1,5 +1,6 @@
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import UnprotectedRoute from "./components/routing/UnprotectedRoute";
+import Analytics from "./pages/Analytics";
 import Doctors from "./pages/Doctors";
 import DoctorForm from "./pages/forms/DoctorForm";
 import PatientForm from "./pages/forms/PatientForm";
@@ -36,6 +37,7 @@ const routes = {
   "/templates/:id/edit": ({ id }) => (
     <ProtectedRoute element={<TemplateForm id={id} />} />
   ),
+  "/analytics": () => <ProtectedRoute element={<Analytics />} />,
 };
 
 export default routes;
