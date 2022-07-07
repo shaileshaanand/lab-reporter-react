@@ -1,48 +1,41 @@
-/* eslint-disable import/order */
 import { useState } from "react";
-import { useForm } from "@mantine/form";
 
-import PageLayout from "../../components/PageLayout";
-import { Button } from "@mantine/core";
+import { Select } from "@mantine/core";
+import { Tabs, Box } from "@mantine/core";
 import { Group } from "@mantine/core";
 import { Space } from "@mantine/core";
-import { Tabs, Box } from "@mantine/core";
-import { Select } from "@mantine/core";
+import { Button } from "@mantine/core";
+import { Title } from "@mantine/core";
+import { TextInput } from "@mantine/core";
+import { Divider } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
+import RichTextEditor from "@mantine/rte";
+import dayjs from "dayjs";
 import { useQuery } from "react-query";
-import { useDebouncedValue } from "@mantine/hooks";
+import { useMutation } from "react-query";
+import { Check } from "tabler-icons-react";
+
 import {
   getUSGReport,
-  listDoctors,
-  listPatients,
   listTemplates,
   newUSGReport,
   updateUSGReport,
 } from "../../api/api";
-import { capitalize, omit } from "../../helpers/utils";
-import { Text } from "@mantine/core";
-import { forwardRef } from "react";
+import DoctorSelect from "../../components/doctor/DoctorSelect";
+import PageLayout from "../../components/PageLayout";
+import PatientSearchSelect from "../../components/patient/PatientSearchSelect";
+import { omit } from "../../helpers/utils";
 import PatientForm from "./PatientForm";
-import { Title } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
-import { TextInput } from "@mantine/core";
-import RichTextEditor from "@mantine/rte";
-import { useMutation } from "react-query";
-import { showNotification } from "@mantine/notifications";
-import { Check } from "tabler-icons-react";
-import { Divider } from "@mantine/core";
-import dayjs from "dayjs";
-import { LoadingOverlay } from "@mantine/core";
+
 const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
 
-  const [patientNameSearchText, setPatientNameSearchText] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [findingsId, setFindingsId] = useState(0);
 
-  const [patientDebouncedSearchText] = useDebouncedValue(
-    patientNameSearchText,
-    300
-  );
   const form = useForm({
     initialValues: {
       patient: "",
@@ -78,62 +71,6 @@ const ReportForm = ({ id }) => {
       },
     },
   });
-
-  const patients = useQuery(
-    ["listPatients", { limit: 10, page: 1, patientDebouncedSearchText }],
-    async () => {
-      const response = await listPatients(
-        omit({
-          limit: 10,
-          page: 1,
-          name: patientDebouncedSearchText,
-        })
-      );
-      return response[1];
-    },
-    {
-      keepPreviousData: true,
-      select: (response) => {
-        return response.data?.map((patient) => ({
-          label: patient.name,
-          value: patient.id,
-          description: `${patient.phone} | ${capitalize(patient.gender)} | ${
-            patient.age
-          } ${patient.age === 1 ? "Year" : "Years"} old `,
-        }));
-      },
-    }
-  );
-
-  const SelectItem = forwardRef(({ label, description, ...others }, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <div>
-          <Text size="sm">{label}</Text>
-          <Text size="xs" color="dimmed">
-            {description}
-          </Text>
-        </div>
-      </Group>
-    </div>
-  ));
-
-  const doctors = useQuery(
-    ["listDoctors"],
-    async () => {
-      const response = await listDoctors();
-      return response[1];
-    },
-    {
-      keepPreviousData: true,
-      select: (response) => {
-        return response.map((doctor) => ({
-          label: doctor.name,
-          value: doctor.id,
-        }));
-      },
-    }
-  );
 
   const newUSGMutation = useMutation(
     async (data) => {
@@ -233,19 +170,13 @@ const ReportForm = ({ id }) => {
         <Title order={5}>Patient</Title>
         <Tabs active={activeTab} onTabChange={setActiveTab}>
           <Tabs.Tab label="Existing">
-            <Select
-              label="Find Patient by Name"
+            <PatientSearchSelect
+              value={patientId}
               onChange={(value) => {
                 setPatientId(value);
                 form.setFieldValue("patient", value);
               }}
-              value={patientId}
-              data={patients.data || []}
-              searchable={!id}
-              clearable={!id}
-              onSearchChange={setPatientNameSearchText}
-              itemComponent={SelectItem}
-              disabled={!!id}
+              label="Find Patient by Name"
             />
           </Tabs.Tab>
           {!id && (
@@ -270,12 +201,10 @@ const ReportForm = ({ id }) => {
             <Title order={5}>Report</Title>
             <form>
               <Group grow>
-                <Select
+                <DoctorSelect
                   label="Referrer"
                   name="referrer"
                   {...form.getInputProps("referrer")}
-                  data={doctors.data || []}
-                  required
                 />
                 <DatePicker
                   placeholder="Pick Date"
