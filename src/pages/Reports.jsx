@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Box, Table } from "@mantine/core";
 import { ActionIcon } from "@mantine/core";
 import { Group } from "@mantine/core";
-import { Select } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { Loader } from "@mantine/core";
 import { Space } from "@mantine/core";
@@ -25,11 +24,11 @@ import { DeviceFloppy } from "tabler-icons-react";
 import { deleteUSGReport, listUSGReports } from "../api/api";
 import NewReport from "../components/buttons/NewReport";
 import PageLayout from "../components/PageLayout";
+import RowsCountSelector from "../components/RowsCountSelector";
 
 const Reports = () => {
   const [limit, setLimit] = useState("10");
   const [page, setPage] = useState(1);
-  const [limitOptions, setLimitOptions] = useState(["10", "25", "50", "100"]);
   const queryClient = useQueryClient();
   const modals = useModals();
   const reports = useQuery(
@@ -77,23 +76,7 @@ const Reports = () => {
       <Space h={"md"} />
       <Group align={"end"}>
         <Box sx={{ width: "100px" }}>
-          <Select
-            data={limitOptions}
-            value={limit}
-            label="Rows"
-            onChange={setLimit}
-            creatable
-            searchable
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(value) => {
-              setLimitOptions(
-                [...limitOptions, value].sort(
-                  (a, b) => parseInt(a) - parseInt(b)
-                )
-              );
-              setLimit(value);
-            }}
-          />
+          <RowsCountSelector value={limit} onChange={setLimit} />
         </Box>
       </Group>
       <Box mt={20}>
