@@ -19,6 +19,7 @@ const Report = ({ id }) => {
     },
     {
       keepPreviousData: false,
+      cacheTime: 0,
     }
   );
 
