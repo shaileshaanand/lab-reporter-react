@@ -11,10 +11,16 @@ import { Printer } from "tabler-icons-react";
 import { getUSGReport } from "../api/api";
 
 const Report = ({ id }) => {
-  const { data, isLoading } = useQuery(["report", { id }], async () => {
-    const response = await getUSGReport({ id });
-    return response[1];
-  });
+  const { data, isLoading } = useQuery(
+    ["report", { id }],
+    async () => {
+      const response = await getUSGReport({ id });
+      return response[1];
+    },
+    {
+      keepPreviousData: false,
+    }
+  );
 
   return (
     <Box>
