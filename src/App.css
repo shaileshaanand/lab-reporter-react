@@ -15,4 +15,19 @@
 
 .quill p {
   font-size: 14px;
+  font-weight: bold;
+}
+
+.quill h1 {
+  font-size: 17px;
+}
+
+.quill h2 {
+  font-size: 16px;
+}
+.quill h3 {
+  font-size: 15px;
+}
+.quill h4 {
+  font-size: 12px;
 }
