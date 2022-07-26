@@ -119,9 +119,18 @@ const Report = ({ id }) => {
               <Center>
                 <Text weight={"bold"}>SONOLOGIST</Text>
               </Center>
-              <Text weight={"bold"}>ULTRASONOGRAPHY CENTRE</Text>
               <Center>
-                <Text weight={"bold"}>CHHATTARPUR, PALAMU</Text>
+                <Text weight={"bold"} size={"sm"}>
+                  ULTRASONOGRAPHY CENTRE
+                </Text>
+              </Center>
+              <Center>
+                <Text weight={"bold"}>
+                  (MAA LALITA HOSPITAL & RESEARCH CENTRE)
+                </Text>
+              </Center>
+              <Center>
+                <Text weight={"bold"}>CHHATTARPUR (PALAMU)</Text>
               </Center>
             </Box>
           </Group>
