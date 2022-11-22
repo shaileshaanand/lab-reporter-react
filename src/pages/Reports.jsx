@@ -97,7 +97,7 @@ const Reports = () => {
               </tr>
             </thead>
             <tbody>
-              {reports.data.data.map((report) => (
+              {reports?.data?.data.map((report) => (
                 <tr key={report.id}>
                   <td>{report.patient.name}</td>
                   <td>{report.referrer.name}</td>
@@ -148,7 +148,7 @@ const Reports = () => {
         <Center>
           <Pagination
             page={page}
-            total={reports.data?.totalPages}
+            total={reports?.data?.totalPages}
             onChange={setPage}
           />
         </Center>
