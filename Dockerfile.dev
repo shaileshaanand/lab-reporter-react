@@ -1,0 +1,16 @@
+FROM node:16-alpine
+
+RUN npm i -g pnpm
+
+RUN mkdir -p /src/node_modules
+RUN mkdir -p /src/.pnpm-store
+WORKDIR /src
+
+RUN chown -R node:node /src/node_modules
+RUN chown -R node:node /src/.pnpm-store
+
+USER node
+
+COPY --chown=node:node . /src
+
+EXPOSE 3030
