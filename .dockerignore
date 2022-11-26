@@ -1,0 +1,13 @@
+Dockerfile
+Dockerfile.*
+.dockerignore
+.git
+.gitignore
+.gitmodules
+node_modules
+.git
+.npmrc
+coverage
+.env*
+.vscode
+.pnpm-store
