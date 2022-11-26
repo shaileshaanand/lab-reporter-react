@@ -1,24 +1,24 @@
 import { useState } from "react";
 
-import { Table } from "@mantine/core";
-import { Box } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Pagination } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
-import { Space } from "@mantine/core";
-import { TextInput } from "@mantine/core";
-import { Select } from "@mantine/core";
-import { Loader } from "@mantine/core";
-import { Text } from "@mantine/core";
+import {
+  Table,
+  Box,
+  Center,
+  Pagination,
+  Group,
+  ActionIcon,
+  Space,
+  TextInput,
+  Select,
+  Loader,
+  Text,
+} from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { Link } from "raviger";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { Trash } from "tabler-icons-react";
-import { Pencil } from "tabler-icons-react";
-import { Check } from "tabler-icons-react";
+import { Trash, Pencil, Check } from "tabler-icons-react";
 
 import { deletePatient, listPatients } from "../api/api";
 import NewPatient from "../components/buttons/NewPatient";

@@ -1,7 +1,6 @@
 import "./App.css";
 
-import { Box } from "@mantine/core";
-import { Center } from "@mantine/core";
+import { Box, Center } from "@mantine/core";
 import { useRoutes } from "raviger";
 
 import NavbarSegmented from "./components/Navbar";

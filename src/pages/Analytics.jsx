@@ -1,11 +1,15 @@
 import { useState } from "react";
 
-import { Box, Table, Title } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Loader } from "@mantine/core";
-import { Space } from "@mantine/core";
-import { Pagination } from "@mantine/core";
+import {
+  Box,
+  Table,
+  Title,
+  Group,
+  Center,
+  Loader,
+  Space,
+  Pagination,
+} from "@mantine/core";
 import { DateRangePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";

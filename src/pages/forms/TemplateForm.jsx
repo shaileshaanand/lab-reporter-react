@@ -1,27 +1,33 @@
-import { LoadingOverlay } from "@mantine/core";
-import { TextInput } from "@mantine/core";
-import { Button } from "@mantine/core";
-import { Title } from "@mantine/core";
-import { Space } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Box } from "@mantine/core";
+import {
+  LoadingOverlay,
+  Select,
+  TextInput,
+  Button,
+  Group,
+  Box,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import RichTextEditor from "@mantine/rte";
 import { useQueryParams } from "raviger";
 import { useMutation, useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 
-import { getTemplate, newTemplate, updateTemplate } from "../../api/api";
+import {
+  getTemplate,
+  getUSGReport,
+  listTemplates,
+  newTemplate,
+  updateTemplate,
+} from "../../api/api";
 import PageLayout from "../../components/PageLayout";
 import { omit } from "../../helpers/utils";
 
 const TemplateForm = ({ id }) => {
-  const [{ content }] = useQueryParams();
+  const [{ template: reportTemplate }] = useQueryParams();
   const form = useForm({
     initialValues: {
       name: "",
-      content: content || "",
+      template: "",
     },
     validate: {
       name: (value) => {
@@ -72,6 +78,22 @@ const TemplateForm = ({ id }) => {
     }
   );
 
+  const listTemplatesQuery = useQuery(
+    ["listTemplates"],
+    async () => {
+      const response = await listTemplates();
+      return response[1];
+    },
+    {
+      select: (data) =>
+        data.map((template) => ({
+          label: template.name,
+          value: template.id,
+        })),
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const getTemplateQuery = useQuery(
     ["template", id],
     async () => {
@@ -80,19 +102,51 @@ const TemplateForm = ({ id }) => {
     },
     {
       enabled: !!id,
+      refetchOnWindowFocus: false,
       select: (template) => {
         delete template.id;
         delete template.createdAt;
         delete template.updatedAt;
+        delete template.driveFileId;
         return template;
       },
       onSuccess: (template) => {
-        form.setValues({ name: "", content: "", ...template });
+        form.setValues({ name: "", template: "", ...template });
+      },
+    }
+  );
+
+  const getUSGReportQuery = useQuery(
+    ["getUSGReport", { reportTemplate }],
+    async () => {
+      const response = await getUSGReport({ id: reportTemplate });
+      return response[1];
+    },
+    {
+      enabled: !!reportTemplate,
+      onSuccess: (data) => {
+        if (data.id) {
+          delete data.id;
+        }
+        console.log(data);
       },
     }
   );
   return (
-    <PageLayout title={id ? "Update Template" : "New Template"} backButton>
+    <PageLayout
+      title={
+        id
+          ? "Update Template"
+          : `New Template${
+              reportTemplate
+                ? ` from ${getUSGReportQuery.data?.partOfScan} (${
+                    getUSGReportQuery.data?.patient?.name || ""
+                  })`
+                : ""
+            }`
+      }
+      backButton
+    >
       <form
         onSubmit={form.onSubmit(() => {
           id
@@ -107,10 +161,11 @@ const TemplateForm = ({ id }) => {
         >
           <LoadingOverlay
             visible={
-              id
+              !listTemplatesQuery.isFetching &&
+              (id
                 ? getTemplateQuery.isFetching ||
                   updateTemplateMutation.isLoading
-                : newTemplateMutation.isLoading
+                : newTemplateMutation.isLoading)
             }
           />
           <TextInput
@@ -119,12 +174,17 @@ const TemplateForm = ({ id }) => {
             required
             {...form.getInputProps("name")}
           />
-          <Space h="md" />
-          <Title order={5}>Content</Title>
-          <Space h="sm" />
-          {((id && form.values.content) || !id) && (
-            <RichTextEditor {...form.getInputProps("content")} />
-          )}
+          {reportTemplate
+            ? null
+            : !id &&
+              listTemplatesQuery.data && (
+                <Select
+                  label="Template"
+                  placeholder="Select template"
+                  data={listTemplatesQuery.data}
+                  {...form.getInputProps("template")}
+                />
+              )}
           <Group position="right">
             <Button type="submit" size={"lg"} mt={20}>
               {id ? "Update" : "Create"} Template

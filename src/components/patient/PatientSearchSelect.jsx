@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { forwardRef } from "react";
+import { useState, forwardRef } from "react";
 
-import { Text } from "@mantine/core";
-import { Select } from "@mantine/core";
-import { Group } from "@mantine/core";
+import { Text, Select, Group } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useQuery } from "react-query";
 

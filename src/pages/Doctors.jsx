@@ -1,16 +1,18 @@
-import { Group } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Loader } from "@mantine/core";
-import { Space, Table, Box, Text } from "@mantine/core";
+import {
+  Group,
+  ActionIcon,
+  Center,
+  Loader,
+  Space,
+  Table,
+  Box,
+  Text,
+} from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { Link } from "raviger";
-import { useQueryClient } from "react-query";
-import { useQuery, useMutation } from "react-query";
-import { Trash } from "tabler-icons-react";
-import { Check } from "tabler-icons-react";
-import { Pencil } from "tabler-icons-react";
+import { useQueryClient, useQuery, useMutation } from "react-query";
+import { Trash, Check, Pencil } from "tabler-icons-react";
 
 import { deleteDoctor, listDoctors } from "../api/api";
 import NewDoctor from "../components/buttons/NewDoctor";

@@ -1,20 +1,20 @@
-import { Space } from "@mantine/core";
-import { Table } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Loader } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Box } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
-import { Text } from "@mantine/core";
+import {
+  Space,
+  Table,
+  Group,
+  Loader,
+  Center,
+  Box,
+  ActionIcon,
+  Text,
+} from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { Link } from "raviger";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { Trash } from "tabler-icons-react";
-import { Pencil } from "tabler-icons-react";
-import { Check } from "tabler-icons-react";
+import { Refresh, ArrowUpRight, Trash, Check } from "tabler-icons-react";
 
-import { deleteTemplate, listTemplates } from "../api/api";
+import { deleteTemplate, listTemplates, syncTemplate } from "../api/api";
 import NewTemplate from "../components/buttons/NewTemplate";
 import PageLayout from "../components/PageLayout";
 const Templates = () => {
@@ -32,6 +32,22 @@ const Templates = () => {
       onSuccess: () => {
         showNotification({
           message: "Template deleted successfully",
+          title: "Success",
+          color: "green",
+          icon: <Check />,
+        });
+        queryClient.invalidateQueries("listTemplates");
+      },
+    }
+  );
+  const syncTemplateMutation = useMutation(
+    async (id) => {
+      await syncTemplate({ id });
+    },
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "Template synced successfully",
           title: "Success",
           color: "green",
           icon: <Check />,
@@ -78,11 +94,21 @@ const Templates = () => {
                   <td>
                     <Group spacing={"xs"}>
                       <ActionIcon
-                        color={"blue"}
+                        color={"green"}
                         component={Link}
-                        href={`/templates/${template.id}/edit`}
+                        href={`https://docs.google.com/document/d/${template.driveFileId}/edit`}
+                        target="_blank"
                       >
-                        <Pencil />
+                        <ArrowUpRight />
+                      </ActionIcon>
+
+                      <ActionIcon
+                        color={"blue"}
+                        onClick={() => {
+                          syncTemplateMutation.mutate(template.id);
+                        }}
+                      >
+                        <Refresh />
                       </ActionIcon>
                       <ActionIcon
                         color={"red"}

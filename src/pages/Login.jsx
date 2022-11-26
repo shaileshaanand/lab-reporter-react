@@ -1,11 +1,15 @@
 import React from "react";
 
-import { Title } from "@mantine/core";
-import { Container } from "@mantine/core";
-import { PasswordInput, TextInput } from "@mantine/core";
-import { Button, Box } from "@mantine/core";
-import { Stack } from "@mantine/core";
-import { Center } from "@mantine/core";
+import {
+  Title,
+  Container,
+  PasswordInput,
+  TextInput,
+  Button,
+  Box,
+  Stack,
+  Center,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 import useLogin from "../hooks/use-login";

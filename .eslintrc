@@ -1,14 +1,48 @@
 {
-  "plugins": ["unused-imports"],
-  "extends": ["react-app", "plugin:prettier/recommended"],
+  "plugins": [
+    "unused-imports"
+  ],
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:import/recommended",
+    "plugin:jsx-a11y/recommended",
+    "eslint-config-prettier",
+    "eslint:recommended",
+    "react-app",
+    "plugin:prettier/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ],
+      },
+    },
+  },
   "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
     "no-unused-vars": "off",
     "no-restricted-globals": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "internal"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
         "pathGroups": [
           {
             "pattern": "react",
@@ -16,7 +50,9 @@
             "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["react"],
+        "pathGroupsExcludedImportTypes": [
+          "react"
+        ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -35,10 +71,19 @@
       }
     ]
   },
-  "ignorePatterns": ["**/node_modules/**", "**/dist/**"],
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**"
+  ],
   "overrides": [
     {
-      "files": ["*.jsx", "*.js"]
+      "files": [
+        "*.jsx",
+        "*.js"
+      ]
     }
-  ]
+  ],
+  "env": {
+    "browser": true
+  }
 }

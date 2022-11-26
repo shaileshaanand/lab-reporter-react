@@ -1,12 +1,7 @@
-import { LoadingOverlay } from "@mantine/core";
-import { TextInput } from "@mantine/core";
-import { Button } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Box } from "@mantine/core";
+import { LoadingOverlay, TextInput, Button, Group, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useQuery } from "react-query";
-import { useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { Check } from "tabler-icons-react";
 
 import { getDoctor, newDoctor, updateDoctor } from "../../api/api";

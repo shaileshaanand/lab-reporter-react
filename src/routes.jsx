@@ -8,6 +8,7 @@ import ReportForm from "./pages/forms/ReportForm";
 import TemplateForm from "./pages/forms/TemplateForm";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import OauthCallback from "./pages/OauthCallback";
 import Patients from "./pages/Patients";
 import Report from "./pages/Report";
 import Reports from "./pages/Reports";
@@ -38,6 +39,7 @@ const routes = {
     <ProtectedRoute element={<TemplateForm id={id} />} />
   ),
   "/analytics": () => <ProtectedRoute element={<Analytics />} />,
+  "/oauth-callback": () => <ProtectedRoute element={<OauthCallback />} />,
 };
 
 export default routes;

@@ -103,3 +103,39 @@ export const deleteTemplate = (params) => {
 export const listTemplates = (pathParam) => {
   return FireRequest("GET", `/template`, null, false, pathParam, null, true);
 };
+
+export const getGoogleLoginLink = (pathParams) => {
+  return FireRequest(
+    "GET",
+    `/auth/get-google-login-url`,
+    null,
+    false,
+    pathParams,
+    null,
+    false
+  );
+};
+
+export const googleLogin = (body) => {
+  return FireRequest(
+    "POST",
+    `/auth/google-login`,
+    body,
+    true,
+    null,
+    null,
+    false
+  );
+};
+
+export const syncTemplate = (params) => {
+  return FireRequest(
+    "POST",
+    `/template/:id/sync`,
+    null,
+    false,
+    null,
+    params,
+    true
+  );
+};

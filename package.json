@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.jsx --fix"
   },
   "dependencies": {
     "@mantine/core": "^4.2.8",
@@ -15,7 +17,12 @@
     "@mantine/modals": "^4.2.8",
     "@mantine/notifications": "^4.2.8",
     "@mantine/rte": "^4.2.8",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "dayjs": "^1.11.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.11",
     "raviger": "^4.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

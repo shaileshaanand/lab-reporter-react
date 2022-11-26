@@ -1,16 +1,16 @@
-import { TextInput } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Radio } from "@mantine/core";
-import { LoadingOverlay } from "@mantine/core";
-import { Button } from "@mantine/core";
-import { RadioGroup } from "@mantine/core";
-import { NumberInput } from "@mantine/core";
-import { Box } from "@mantine/core";
+import {
+  TextInput,
+  Group,
+  Radio,
+  LoadingOverlay,
+  Button,
+  RadioGroup,
+  NumberInput,
+  Box,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useMutation } from "react-query";
-import { useQueryClient } from "react-query";
-import { useQuery } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { Check } from "tabler-icons-react";
 
 import { getPatient, newPatient, updatePatient } from "../../api/api";

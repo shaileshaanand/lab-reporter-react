@@ -1,9 +1,13 @@
-import { Button } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Title } from "@mantine/core";
-import { Loader, Box, Grid, Text } from "@mantine/core";
-import RichTextEditor from "@mantine/rte";
+import {
+  Button,
+  Group,
+  Center,
+  Title,
+  Loader,
+  Box,
+  Grid,
+  Text,
+} from "@mantine/core";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { Printer } from "tabler-icons-react";
@@ -105,15 +109,6 @@ const Report = ({ id }) => {
               Report of Ultrasonography
             </Title>
           </Center>
-          <RichTextEditor
-            value={data.findings}
-            readOnly
-            styles={{
-              root: {
-                border: "0px",
-              },
-            }}
-          />
           <Group position={"right"} mr={20} mb={40}>
             <Box>
               <Center>

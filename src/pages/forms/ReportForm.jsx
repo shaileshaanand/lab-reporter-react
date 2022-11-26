@@ -1,21 +1,22 @@
 import { useState } from "react";
 
-import { Select } from "@mantine/core";
-import { Tabs, Box } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Space } from "@mantine/core";
-import { Button } from "@mantine/core";
-import { Title } from "@mantine/core";
-import { TextInput } from "@mantine/core";
-import { Divider } from "@mantine/core";
-import { LoadingOverlay } from "@mantine/core";
+import {
+  Select,
+  Tabs,
+  Box,
+  Group,
+  Space,
+  Button,
+  Title,
+  TextInput,
+  Divider,
+  LoadingOverlay,
+} from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import RichTextEditor from "@mantine/rte";
 import dayjs from "dayjs";
-import { useQuery } from "react-query";
-import { useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { Check } from "tabler-icons-react";
 
 import {
@@ -34,14 +35,14 @@ const ReportForm = ({ id }) => {
   const [patientId, setPatientId] = useState("");
 
   const [activeTab, setActiveTab] = useState(0);
-  const [findingsId, setFindingsId] = useState(0);
+  // const [findingsId, setFindingsId] = useState(0);
 
   const form = useForm({
     initialValues: {
       patient: "",
       referrer: "",
       date: dayjs().toDate(),
-      findings: "",
+      template: "",
       partOfScan: "",
     },
     validate: {
@@ -57,15 +58,15 @@ const ReportForm = ({ id }) => {
         }
         return null;
       },
-      findings: (value) => {
-        if (!value) {
-          return "Findings is required";
-        }
-        return null;
-      },
       partOfScan: (value) => {
         if (!value) {
           return "Part of scan is required";
+        }
+        return null;
+      },
+      template: (value) => {
+        if (!value) {
+          return "Template is required";
         }
         return null;
       },
@@ -152,7 +153,7 @@ const ReportForm = ({ id }) => {
       select: (response) => {
         return response.map((template) => ({
           label: template.name,
-          value: template.content,
+          value: template.id,
         }));
       },
     }
@@ -223,25 +224,15 @@ const ReportForm = ({ id }) => {
               </Group>
             </form>
 
-            <Space h="md" />
-            <Divider />
-            <Space h="md" />
-            <Group position={"apart"}>
-              <Title order={5}>Findings</Title>
-              <Select
-                data={listTemplatesQuery.data}
-                placeholder="Choose Template"
-                onChange={(template) => {
-                  form.setFieldValue("findings", template);
-                  setFindingsId(findingsId + 1);
-                }}
-              />
-            </Group>
-            <Space h="md" />
-            <RichTextEditor
-              key={findingsId}
-              {...form.getInputProps("findings")}
+            <Select
+              label="Template"
+              data={listTemplatesQuery.data}
+              placeholder="Choose Template"
+              onChange={(template) => {
+                form.setFieldValue("template", template);
+              }}
             />
+            <Space h="md" />
           </>
         )}
       </Box>

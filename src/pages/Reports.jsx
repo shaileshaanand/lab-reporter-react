@@ -1,25 +1,22 @@
 import { useState } from "react";
 
-import { Box, Table } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
-import { Group } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Loader } from "@mantine/core";
-import { Space } from "@mantine/core";
-import { Pagination } from "@mantine/core";
-import { Text } from "@mantine/core";
+import {
+  Box,
+  Table,
+  ActionIcon,
+  Group,
+  Center,
+  Loader,
+  Space,
+  Pagination,
+  Text,
+} from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import dayjs from "dayjs";
 import { Link } from "raviger";
-import { useQuery } from "react-query";
-import { useQueryClient } from "react-query";
-import { useMutation } from "react-query";
-import { Printer } from "tabler-icons-react";
-import { Pencil } from "tabler-icons-react";
-import { Trash } from "tabler-icons-react";
-import { Check } from "tabler-icons-react";
-import { DeviceFloppy } from "tabler-icons-react";
+import { useQuery, useQueryClient, useMutation } from "react-query";
+import { ArrowUpRight, Trash, Check, DeviceFloppy } from "tabler-icons-react";
 
 import { deleteUSGReport, listUSGReports } from "../api/api";
 import NewReport from "../components/buttons/NewReport";
@@ -109,18 +106,12 @@ const Reports = () => {
                   <td>
                     <Group spacing={"xs"}>
                       <ActionIcon
-                        color={"blue"}
+                        color={"green"}
                         component={Link}
-                        href={`/reports/${report.id}`}
+                        href={`https://docs.google.com/document/d/${report.driveFileId}/edit`}
+                        target="_blank"
                       >
-                        <Printer />
-                      </ActionIcon>
-                      <ActionIcon
-                        color={"blue"}
-                        component={Link}
-                        href={`/reports/${report.id}/edit`}
-                      >
-                        <Pencil />
+                        <ArrowUpRight />
                       </ActionIcon>
                       <ActionIcon
                         color={"red"}
@@ -131,9 +122,7 @@ const Reports = () => {
                       <ActionIcon
                         color={"green"}
                         component={Link}
-                        href={`/templates/new?content=${encodeURIComponent(
-                          report.findings
-                        )}`}
+                        href={`/templates/new?template=${report.id}`}
                       >
                         <DeviceFloppy />
                       </ActionIcon>

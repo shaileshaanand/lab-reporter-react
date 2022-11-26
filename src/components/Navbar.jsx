@@ -1,17 +1,29 @@
 import React from "react";
 
-import { Navbar, createStyles } from "@mantine/core";
-import { Title } from "@mantine/core";
-import { Center } from "@mantine/core";
-import { Divider } from "@mantine/core";
+import {
+  Navbar,
+  createStyles,
+  Button,
+  Title,
+  Center,
+  Divider,
+  Space,
+} from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { ActiveLink } from "raviger";
-import { Logout, Home2 } from "tabler-icons-react";
-import { ReportMedical } from "tabler-icons-react";
-import { Users } from "tabler-icons-react";
-import { Stethoscope } from "tabler-icons-react";
-import { DeviceAnalytics } from "tabler-icons-react";
-import { Template } from "tabler-icons-react";
+import { useQuery } from "react-query";
+import {
+  Logout,
+  Home2,
+  BrandGoogle,
+  ReportMedical,
+  Users,
+  Stethoscope,
+  DeviceAnalytics,
+  Template,
+} from "tabler-icons-react";
+
+import { getGoogleLoginLink } from "../api/api";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -108,6 +120,21 @@ const tabs = [
 export default function NavbarSegmented() {
   const { classes, cx } = useStyles();
 
+  const googleLoginLinkQuery = useQuery(
+    ["googleLoginLink"],
+    async () => {
+      const response = await getGoogleLoginLink({
+        callbackUrl: window.location.origin + "/oauth-callback",
+      });
+      console.log(response);
+      return response[1];
+    },
+    {
+      refetchOnWindowFocus: false,
+      select: (data) => data.googleLoginUrl,
+    }
+  );
+
   const [_, setToken] = useLocalStorage({ key: "token" });
   const links = tabs.map((item) => (
     <ActiveLink
@@ -136,6 +163,36 @@ export default function NavbarSegmented() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
+        <Center>
+          <Button
+            component="a"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={googleLoginLinkQuery.data}
+            leftIcon={<BrandGoogle size={18} />}
+            styles={(theme) => ({
+              root: {
+                backgroundColor: "#4c8bf5",
+                border: 0,
+                height: 42,
+                paddingLeft: 20,
+                paddingRight: 20,
+
+                "&:hover": {
+                  backgroundColor: theme.fn.darken("#4c8bf5", 0.05),
+                },
+              },
+
+              leftIcon: {
+                marginRight: 15,
+              },
+            })}
+          >
+            Link Google Drive
+          </Button>
+        </Center>
+        <Space h="xl" />
+        {/* eslint-disable-next-line */}
         <a
           href="#"
           className={classes.link}

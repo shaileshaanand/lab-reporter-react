@@ -1,6 +1,4 @@
-import { Group } from "@mantine/core";
-import { Title } from "@mantine/core";
-import { Box } from "@mantine/core";
+import { Group, Title, Box } from "@mantine/core";
 
 import NewDoctor from "../components/buttons/NewDoctor";
 import NewPatient from "../components/buttons/NewPatient";
