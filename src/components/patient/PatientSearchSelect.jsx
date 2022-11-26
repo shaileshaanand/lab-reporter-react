@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { listPatients } from "../../api/api";
 import { capitalize, omit } from "../../helpers/utils";
 
+// eslint-disable-next-line react/display-name
 const SelectItem = forwardRef(({ label, description, ...others }, ref) => (
   <div ref={ref} {...others}>
     <Group noWrap>

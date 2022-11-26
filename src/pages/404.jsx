@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  //eslint-disable-next-line import/named
   createStyles,
   Title,
   Text,
