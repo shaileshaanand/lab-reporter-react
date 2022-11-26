@@ -30,7 +30,8 @@ const OauthCallback = () => {
   useEffect(() => {
     console.log({ code });
     googleLoginMutation.mutate(code);
-  }, [code, googleLoginMutation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code]);
 
   return (
     <div>
